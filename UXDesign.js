@@ -8,11 +8,11 @@ var UXDesign;
     function init() {
         //window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keypress", handleKeyPress);
+        window.addEventListener("keyup", handleKeyUp);
         window.addEventListener("keypress", doubleKeyPressRB);
         window.addEventListener("keyup", doubleKeyUpRB);
         window.addEventListener("keypress", doubleKeyPressGewitter);
         window.addEventListener("keyup", doubleKeyUpGewitter);
-        window.addEventListener("keyup", handleKeyUp);
     }
     /*function handleKeyDown(_event: KeyboardEvent): void {
 
@@ -34,6 +34,7 @@ var UXDesign;
             console.log("a wurde gedr�ckt");
             document.getElementById("regentropfen+").classList.remove("hidden");
             document.getElementById("regentropfen+").classList.add("visible");
+            document.getElementById("audio_regen").setAttribute("autoplay", "true");
         }
         else if (_event.key == "d") {
             console.log("d wurde gedr�ckt");
@@ -49,6 +50,27 @@ var UXDesign;
             console.log("w wurde gedr�ckt");
             document.getElementById("wind").classList.remove("hidden");
             document.getElementById("wind").classList.add("visible");
+        }
+    }
+    function handleKeyUp(_event) {
+        console.log("Taste geht hoch!");
+        if (_event.key == "a") {
+            document.getElementById("regentropfen+").classList.remove("visible");
+            document.getElementById("regentropfen+").classList.add("hidden");
+            document.getElementById("audio_regen").removeAttribute("autoplay");
+        }
+        else if (_event.key == "d") {
+            console.log("d wurde gedr�ckt");
+            document.getElementById("regentropfen-").classList.remove("visible");
+            document.getElementById("regentropfen-").classList.add("hidden");
+        }
+        else if (_event.key == "s") {
+            document.getElementById("sonne").classList.remove("visible");
+            document.getElementById("sonne").classList.add("hidden");
+        }
+        else if (_event.key == "w") {
+            document.getElementById("wind").classList.remove("visible");
+            document.getElementById("wind").classList.add("hidden");
         }
     }
     function doubleKeyPressRB(_event) {
@@ -123,26 +145,6 @@ var UXDesign;
             gewitter.classList.remove("visible");
             gewitter.classList.add("hidden");
             window.addEventListener("keypress", handleKeyPress);
-        }
-    }
-    function handleKeyUp(_event) {
-        console.log("Taste geht hoch!");
-        if (_event.key == "a") {
-            document.getElementById("regentropfen+").classList.remove("visible");
-            document.getElementById("regentropfen+").classList.add("hidden");
-        }
-        else if (_event.key == "d") {
-            console.log("d wurde gedr�ckt");
-            document.getElementById("regentropfen-").classList.remove("visible");
-            document.getElementById("regentropfen-").classList.add("hidden");
-        }
-        else if (_event.key == "s") {
-            document.getElementById("sonne").classList.remove("visible");
-            document.getElementById("sonne").classList.add("hidden");
-        }
-        else if (_event.key == "w") {
-            document.getElementById("wind").classList.remove("visible");
-            document.getElementById("wind").classList.add("hidden");
         }
     }
 })(UXDesign || (UXDesign = {}));

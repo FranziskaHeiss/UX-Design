@@ -11,11 +11,11 @@ namespace UXDesign {
     function init(): void {
       //window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keypress", handleKeyPress);
+        window.addEventListener("keyup", handleKeyUp);
         window.addEventListener("keypress", doubleKeyPressRB);
         window.addEventListener("keyup", doubleKeyUpRB);
         window.addEventListener("keypress", doubleKeyPressGewitter);
-        window.addEventListener("keyup", doubleKeyUpGewitter);
-        window.addEventListener("keyup", handleKeyUp);
+        window.addEventListener("keyup", doubleKeyUpGewitter);     
     }
 
     /*function handleKeyDown(_event: KeyboardEvent): void {
@@ -35,12 +35,24 @@ namespace UXDesign {
     }*/
 
     function handleKeyPress(_event: KeyboardEvent): void {
-    
+
         if (_event.key == "a") {
             console.log("a wurde gedrückt");
                       
             document.getElementById("regentropfen+").classList.remove("hidden");
             document.getElementById("regentropfen+").classList.add("visible");
+            document.getElementById("audio_regen").setAttribute("autoplay", "true"); 
+            
+            /*let audioNumber: number = 0;
+            if (audioNumber == 0) {
+                let audio: HTMLElement = document.createElement("audio");
+                audio.setAttribute("id", "audio_regen");
+                audio.setAttribute("src", "sound/regen.mp3");
+                audio.setAttribute("type", "audio/mp3");
+                audio.setAttribute("autoplay", "true");
+                document.getElementById("regentropfen+").appendChild(audio);
+                audioNumber++;
+            }*/
         }
 
         else if (_event.key == "d") {
@@ -64,6 +76,35 @@ namespace UXDesign {
             document.getElementById("wind").classList.add("visible");
         }
     }
+
+
+    function handleKeyUp(_event: KeyboardEvent): void {
+        console.log("Taste geht hoch!");
+
+        if (_event.key == "a") {
+            document.getElementById("regentropfen+").classList.remove("visible");
+            document.getElementById("regentropfen+").classList.add("hidden"); 
+            document.getElementById("audio_regen").removeAttribute("autoplay");        
+        }
+
+        else if (_event.key == "d") {
+            console.log("d wurde gedrückt");         
+
+            document.getElementById("regentropfen-").classList.remove("visible");
+            document.getElementById("regentropfen-").classList.add("hidden");
+        }
+
+        else if (_event.key == "s") {
+            document.getElementById("sonne").classList.remove("visible");
+            document.getElementById("sonne").classList.add("hidden");
+        }
+
+        else if (_event.key == "w") {
+            document.getElementById("wind").classList.remove("visible");
+            document.getElementById("wind").classList.add("hidden");
+        }
+    }
+
 
     function doubleKeyPressRB(_event: KeyboardEvent): void {
 
@@ -167,32 +208,5 @@ namespace UXDesign {
            
             window.addEventListener("keypress", handleKeyPress);
         }
-    }
-
-
-    function handleKeyUp(_event: KeyboardEvent): void {
-        console.log("Taste geht hoch!");
-
-        if (_event.key == "a") {
-            document.getElementById("regentropfen+").classList.remove("visible");
-            document.getElementById("regentropfen+").classList.add("hidden");
-        }
-
-        else if (_event.key == "d") {
-            console.log("d wurde gedrückt");         
-
-            document.getElementById("regentropfen-").classList.remove("visible");
-            document.getElementById("regentropfen-").classList.add("hidden");
-        }
-
-        else if (_event.key == "s") {
-            document.getElementById("sonne").classList.remove("visible");
-            document.getElementById("sonne").classList.add("hidden");
-        }
-
-        else if (_event.key == "w") {
-            document.getElementById("wind").classList.remove("visible");
-            document.getElementById("wind").classList.add("hidden");
-        }
-    }
+    }   
 }
