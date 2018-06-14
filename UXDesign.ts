@@ -2,12 +2,6 @@ namespace UXDesign {
 
     window.addEventListener("load", init);
 
-    /*let tropfen: HTMLElement = document.getElementById("regentropfen");
-    let sonne: HTMLElement = document.getElementById("sonne");
-    let regenbogen: HTMLElement = document.getElementById("regenbogen");*/
-
-    //test2
-
     function init(): void {
       //window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keypress", handleKeyPress);
