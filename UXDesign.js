@@ -9,6 +9,8 @@ var UXDesign;
         window.addEventListener("keyup", doubleKeyUpRB);
         window.addEventListener("keypress", doubleKeyPressGewitter);
         window.addEventListener("keyup", doubleKeyUpGewitter);
+        window.addEventListener("keypress", doubleKeyPressSonnenwind);
+        window.addEventListener("keyup", doubleKeyUpSonnenwind);
     }
     /*function handleKeyDown(_event: KeyboardEvent): void {
 
@@ -140,6 +142,33 @@ var UXDesign;
             console.log("gewitter wurde gedr�ckt");
             gewitter.classList.remove("visible");
             gewitter.classList.add("hidden");
+            window.addEventListener("keypress", handleKeyPress);
+        }
+    }
+    function doubleKeyPressSonnenwind(_event) {
+        let wind = document.getElementById("wind");
+        let sonne = document.getElementById("sonne");
+        let sonnenwind = document.getElementById("sonnenwind");
+        /*let imgSonne: HTMLImageElement = document.getElementById("sonne").getElementsByTagName("img")[0];
+        let imgTropfen: HTMLImageElement = document.getElementById("regentropfen+").getElementsByTagName("img")[0];
+        let imgTropfen2: HTMLImageElement = document.getElementById("regentropfen-").getElementsByTagName("img")[0];*/
+        if (wind.classList.contains("visible") && sonne.classList.contains("visible")) {
+            console.log("Sonnenwind wurde gedr�ckt");
+            window.removeEventListener("keypress", handleKeyPress);
+            sonnenwind.classList.remove("hidden");
+            sonnenwind.classList.add("visible");
+            sonne.classList.remove("visible");
+            sonne.classList.add("hidden");
+            wind.classList.remove("visible");
+            wind.classList.add("hidden");
+        }
+    }
+    function doubleKeyUpSonnenwind(_event) {
+        let sonnenwind = document.getElementById("sonnenwind");
+        if (sonnenwind.classList.contains("visible")) {
+            console.log("gewitter wurde gedr�ckt");
+            sonnenwind.classList.remove("visible");
+            sonnenwind.classList.add("hidden");
             window.addEventListener("keypress", handleKeyPress);
         }
     }

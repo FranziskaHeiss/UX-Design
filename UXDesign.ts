@@ -9,7 +9,9 @@ namespace UXDesign {
         window.addEventListener("keypress", doubleKeyPressRB);
         window.addEventListener("keyup", doubleKeyUpRB);
         window.addEventListener("keypress", doubleKeyPressGewitter);
-        window.addEventListener("keyup", doubleKeyUpGewitter);     
+        window.addEventListener("keyup", doubleKeyUpGewitter); 
+        window.addEventListener("keypress", doubleKeyPressSonnenwind); 
+        window.addEventListener("keyup", doubleKeyUpSonnenwind);    
     }
 
     /*function handleKeyDown(_event: KeyboardEvent): void {
@@ -202,5 +204,45 @@ namespace UXDesign {
            
             window.addEventListener("keypress", handleKeyPress);
         }
-    }   
+    }
+    
+    function doubleKeyPressSonnenwind(_event: KeyboardEvent): void {
+
+        let wind: HTMLElement = document.getElementById("wind");
+        let sonne: HTMLElement = document.getElementById("sonne");
+        let sonnenwind: HTMLElement = document.getElementById("sonnenwind");
+        /*let imgSonne: HTMLImageElement = document.getElementById("sonne").getElementsByTagName("img")[0];
+        let imgTropfen: HTMLImageElement = document.getElementById("regentropfen+").getElementsByTagName("img")[0];
+        let imgTropfen2: HTMLImageElement = document.getElementById("regentropfen-").getElementsByTagName("img")[0];*/
+
+        if (wind.classList.contains("visible") && sonne.classList.contains("visible")) {
+            console.log("Sonnenwind wurde gedrückt");
+
+            window.removeEventListener("keypress", handleKeyPress);
+
+            sonnenwind.classList.remove("hidden");
+            sonnenwind.classList.add("visible");
+
+            sonne.classList.remove("visible");
+            sonne.classList.add("hidden");
+
+            wind.classList.remove("visible");
+            wind.classList.add("hidden");
+
+        }
+    }
+    
+    function doubleKeyUpSonnenwind(_event: KeyboardEvent): void {
+
+        let sonnenwind: HTMLElement = document.getElementById("sonnenwind");
+
+        if (sonnenwind.classList.contains("visible")) {
+            console.log("gewitter wurde gedrückt");
+
+            sonnenwind.classList.remove("visible");
+            sonnenwind.classList.add("hidden"); 
+           
+            window.addEventListener("keypress", handleKeyPress);
+        }
+    }
 }
