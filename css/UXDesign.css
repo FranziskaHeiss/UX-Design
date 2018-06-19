@@ -9,6 +9,10 @@
 img {
     display: block;
     margin: auto;
-    width: 1000px; 
-    height: 700px ;
+    width: 1024px; 
+    height: 768px ;
+}
+
+html {
+	background-color: #0099CC;
 }
