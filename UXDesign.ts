@@ -3,15 +3,16 @@ namespace UXDesign {
     window.addEventListener("load", init);
 
     function init(): void {
-      //window.addEventListener("keydown", handleKeyDown);
+        //window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keypress", handleKeyPress);
         window.addEventListener("keyup", handleKeyUp);
         window.addEventListener("keypress", doubleKeyPressRB);
         window.addEventListener("keyup", doubleKeyUpRB);
         window.addEventListener("keypress", doubleKeyPressGewitter);
-        window.addEventListener("keyup", doubleKeyUpGewitter); 
-        window.addEventListener("keypress", doubleKeyPressSonnenwind); 
-        window.addEventListener("keyup", doubleKeyUpSonnenwind);    
+        window.addEventListener("keyup", doubleKeyUpGewitter);
+        window.addEventListener("keypress", doubleKeyPressSonnenwind);
+        window.addEventListener("keyup", doubleKeyUpSonnenwind);
+        audio();
     }
 
     /*function handleKeyDown(_event: KeyboardEvent): void {
@@ -34,11 +35,12 @@ namespace UXDesign {
 
         if (_event.key == "a") {
             console.log("a wurde gedrückt");
-                      
+
             document.getElementById("regentropfen+").classList.remove("hidden");
             document.getElementById("regentropfen+").classList.add("visible");
-            document.getElementById("audio_regen").setAttribute("autoplay", "true"); 
-            
+            //document.getElementById("audio_regen").setAttribute("autoplay", "true"); 
+
+
             /*let audioNumber: number = 0;
             if (audioNumber == 0) {
                 let audio: HTMLElement = document.createElement("audio");
@@ -52,14 +54,16 @@ namespace UXDesign {
         }
 
         else if (_event.key == "d") {
-            console.log("d wurde gedrückt");         
+            console.log("d wurde gedrückt");
 
             document.getElementById("regentropfen-").classList.remove("hidden");
             document.getElementById("regentropfen-").classList.add("visible");
+            document.getElementsByTagName("audio")[0].setAttribute("id", "regen");
+            audio(); 
         }
 
         else if (_event.key == "s") {
-            console.log("s wurde gedrückt");         
+            console.log("s wurde gedrückt");
 
             document.getElementById("sonne").classList.remove("hidden");
             document.getElementById("sonne").classList.add("visible");
@@ -79,15 +83,17 @@ namespace UXDesign {
 
         if (_event.key == "a") {
             document.getElementById("regentropfen+").classList.remove("visible");
-            document.getElementById("regentropfen+").classList.add("hidden"); 
-            document.getElementById("audio_regen").removeAttribute("autoplay");        
+            document.getElementById("regentropfen+").classList.add("hidden");
+            //document.getElementById("audio_regen").removeAttribute("autoplay");
         }
 
         else if (_event.key == "d") {
-            console.log("d wurde gedrückt");         
+            console.log("d wurde gedrückt");
 
             document.getElementById("regentropfen-").classList.remove("visible");
             document.getElementById("regentropfen-").classList.add("hidden");
+            document.getElementsByTagName("audio")[0].setAttribute("id", "");
+            audio();
         }
 
         else if (_event.key == "s") {
@@ -144,17 +150,17 @@ namespace UXDesign {
     function doubleKeyUpRB(_event: KeyboardEvent): void {
 
         let regenbogen: HTMLElement = document.getElementById("regenbogen");
-        
+
         //let imgSonne: HTMLImageElement = document.getElementById("sonne").getElementsByTagName("img")[0];
         //let imgTropfen: HTMLImageElement = document.getElementById("regentropfen").getElementsByTagName("img")[0];
-       
+
 
         if (regenbogen.classList.contains("visible")) {
             console.log("Regenbogen wurde gedrückt");
 
             regenbogen.classList.remove("visible");
             regenbogen.classList.add("hidden");
-            
+
             /*let s: CSSStyleDeclaration = imgSonne.style;
             s.display = "block";
             s.width = "1000";
@@ -173,8 +179,8 @@ namespace UXDesign {
     function doubleKeyPressGewitter(_event: KeyboardEvent): void {
 
         let tropfenPositiv: HTMLElement = document.getElementById("regentropfen+");
-        let tropfenNegativ: HTMLElement = document.getElementById("regentropfen-");     
-        let gewitter: HTMLElement = document.getElementById("gewitter");       
+        let tropfenNegativ: HTMLElement = document.getElementById("regentropfen-");
+        let gewitter: HTMLElement = document.getElementById("gewitter");
 
         if (tropfenPositiv.classList.contains("visible") && tropfenNegativ.classList.contains("visible")) {
             console.log("Gewitter wurde gedrückt");
@@ -188,7 +194,7 @@ namespace UXDesign {
             tropfenPositiv.classList.add("hidden");
 
             tropfenNegativ.classList.remove("visible");
-            tropfenNegativ.classList.add("hidden");        
+            tropfenNegativ.classList.add("hidden");
         }
     }
 
@@ -200,12 +206,12 @@ namespace UXDesign {
             console.log("gewitter wurde gedrückt");
 
             gewitter.classList.remove("visible");
-            gewitter.classList.add("hidden"); 
-           
+            gewitter.classList.add("hidden");
+
             window.addEventListener("keypress", handleKeyPress);
         }
     }
-    
+
     function doubleKeyPressSonnenwind(_event: KeyboardEvent): void {
 
         let wind: HTMLElement = document.getElementById("wind");
@@ -231,7 +237,7 @@ namespace UXDesign {
 
         }
     }
-    
+
     function doubleKeyUpSonnenwind(_event: KeyboardEvent): void {
 
         let sonnenwind: HTMLElement = document.getElementById("sonnenwind");
@@ -240,9 +246,31 @@ namespace UXDesign {
             console.log("gewitter wurde gedrückt");
 
             sonnenwind.classList.remove("visible");
-            sonnenwind.classList.add("hidden"); 
-           
+            sonnenwind.classList.add("hidden");
+
             window.addEventListener("keypress", handleKeyPress);
+        }
+    }
+
+
+    // Web Audio API
+    function audio(): void {
+        let audioctx: AudioContext = new AudioContext;
+        let gainNode: GainNode = audioctx.createGain();
+        let source: MediaElementAudioSourceNode = audioctx.createMediaElementSource(document.getElementsByTagName("audio")[0]);
+        let mute: Element = document.querySelector(".mute");
+        
+        source.connect(gainNode);
+        gainNode.connect(audioctx.destination);
+        
+        if (mute.id == "regen") {
+            gainNode.gain.setValueAtTime(1, audioctx.currentTime);
+            mute.id = "activated";
+            mute.innerHTML = "Unmute";
+        } else {
+            gainNode.gain.setValueAtTime(0, audioctx.currentTime);
+            mute.id = "";
+            mute.innerHTML = "Mute";
         }
     }
 }

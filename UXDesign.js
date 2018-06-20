@@ -11,6 +11,7 @@ var UXDesign;
         window.addEventListener("keyup", doubleKeyUpGewitter);
         window.addEventListener("keypress", doubleKeyPressSonnenwind);
         window.addEventListener("keyup", doubleKeyUpSonnenwind);
+        audio();
     }
     /*function handleKeyDown(_event: KeyboardEvent): void {
 
@@ -32,12 +33,13 @@ var UXDesign;
             console.log("a wurde gedr�ckt");
             document.getElementById("regentropfen+").classList.remove("hidden");
             document.getElementById("regentropfen+").classList.add("visible");
-            document.getElementById("audio_regen").setAttribute("autoplay", "true");
         }
         else if (_event.key == "d") {
             console.log("d wurde gedr�ckt");
             document.getElementById("regentropfen-").classList.remove("hidden");
             document.getElementById("regentropfen-").classList.add("visible");
+            document.getElementsByTagName("audio")[0].setAttribute("id", "regen");
+            audio();
         }
         else if (_event.key == "s") {
             console.log("s wurde gedr�ckt");
@@ -55,12 +57,13 @@ var UXDesign;
         if (_event.key == "a") {
             document.getElementById("regentropfen+").classList.remove("visible");
             document.getElementById("regentropfen+").classList.add("hidden");
-            document.getElementById("audio_regen").removeAttribute("autoplay");
         }
         else if (_event.key == "d") {
             console.log("d wurde gedr�ckt");
             document.getElementById("regentropfen-").classList.remove("visible");
             document.getElementById("regentropfen-").classList.add("hidden");
+            document.getElementsByTagName("audio")[0].setAttribute("id", "");
+            audio();
         }
         else if (_event.key == "s") {
             document.getElementById("sonne").classList.remove("visible");
@@ -170,6 +173,25 @@ var UXDesign;
             sonnenwind.classList.remove("visible");
             sonnenwind.classList.add("hidden");
             window.addEventListener("keypress", handleKeyPress);
+        }
+    }
+    // Web Audio API
+    function audio() {
+        let audioctx = new AudioContext;
+        let gainNode = audioctx.createGain();
+        let source = audioctx.createMediaElementSource(document.getElementsByTagName("audio")[0]);
+        let mute = document.querySelector(".mute");
+        source.connect(gainNode);
+        gainNode.connect(audioctx.destination);
+        if (mute.id == "regen") {
+            gainNode.gain.setValueAtTime(1, audioctx.currentTime);
+            mute.id = "activated";
+            mute.innerHTML = "Unmute";
+        }
+        else {
+            gainNode.gain.setValueAtTime(0, audioctx.currentTime);
+            mute.id = "";
+            mute.innerHTML = "Mute";
         }
     }
 })(UXDesign || (UXDesign = {}));
