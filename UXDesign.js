@@ -1,5 +1,11 @@
 var UXDesign;
 (function (UXDesign) {
+    var audioctx = new AudioContext;
+    var gainNodes = [
+        audioctx.createGain(),
+    ];
+    var sources;
+    var mute = document.querySelector(".mute");
     window.addEventListener("load", init);
     function init() {
         //window.addEventListener("keydown", handleKeyDown);
@@ -11,10 +17,23 @@ var UXDesign;
         window.addEventListener("keyup", doubleKeyUpGewitter);
         window.addEventListener("keypress", doubleKeyPressSonnenwind);
         window.addEventListener("keyup", doubleKeyUpSonnenwind);
+        sources = [
+            audioctx.createMediaElementSource(document.getElementsByTagName("audio")[0]),
+        ];
         audio();
     }
+    // Web Audio API
+    function audio() {
+        for (var _source in sources) {
+            var source = sources[_source];
+            var gainNode = gainNodes[_source];
+            source.connect(gainNode);
+            gainNode.gain.value = 0;
+            gainNode.connect(audioctx.destination);
+        }
+    }
     /*function handleKeyDown(_event: KeyboardEvent): void {
-
+  
         console.group("EventInfo");
         let info: string = "Type: " + _event.type;
         info += " | target: " + _event.target;
@@ -23,7 +42,7 @@ var UXDesign;
         console.log(info);
         console.log(_event);
         console.groupEnd();
-
+  
         if (_event.key == "ArrowUp") {
             console.log("Pfeil nach oben wurde gedr�ckt");
         }
@@ -33,13 +52,13 @@ var UXDesign;
             console.log("a wurde gedr�ckt");
             document.getElementById("regentropfen+").classList.remove("hidden");
             document.getElementById("regentropfen+").classList.add("visible");
+            gainNodes[0].gain.value = 1; // => Entsprechender Gain für Regensound wird von 0% auf 100% (=1) gesetzt.
+            console.log("Gain: " + gainNodes[0].gain.value);
         }
         else if (_event.key == "d") {
             console.log("d wurde gedr�ckt");
             document.getElementById("regentropfen-").classList.remove("hidden");
             document.getElementById("regentropfen-").classList.add("visible");
-            document.getElementsByTagName("audio")[0].setAttribute("id", "regen");
-            audio();
         }
         else if (_event.key == "s") {
             console.log("s wurde gedr�ckt");
@@ -57,13 +76,13 @@ var UXDesign;
         if (_event.key == "a") {
             document.getElementById("regentropfen+").classList.remove("visible");
             document.getElementById("regentropfen+").classList.add("hidden");
+            gainNodes[0].gain.value = 0; // => Entsprechender Gain für Regensound wird wieder von 100% auf 0% gesetzt.
+            console.log("Gain: " + gainNodes[0].gain.value);
         }
         else if (_event.key == "d") {
             console.log("d wurde gedr�ckt");
             document.getElementById("regentropfen-").classList.remove("visible");
             document.getElementById("regentropfen-").classList.add("hidden");
-            document.getElementsByTagName("audio")[0].setAttribute("id", "");
-            audio();
         }
         else if (_event.key == "s") {
             document.getElementById("sonne").classList.remove("visible");
@@ -75,10 +94,10 @@ var UXDesign;
         }
     }
     function doubleKeyPressRB(_event) {
-        let tropfenPositiv = document.getElementById("regentropfen+");
-        let tropfenNegativ = document.getElementById("regentropfen-");
-        let sonne = document.getElementById("sonne");
-        let regenbogen = document.getElementById("regenbogen");
+        var tropfenPositiv = document.getElementById("regentropfen+");
+        var tropfenNegativ = document.getElementById("regentropfen-");
+        var sonne = document.getElementById("sonne");
+        var regenbogen = document.getElementById("regenbogen");
         /*let imgSonne: HTMLImageElement = document.getElementById("sonne").getElementsByTagName("img")[0];
         let imgTropfen: HTMLImageElement = document.getElementById("regentropfen+").getElementsByTagName("img")[0];
         let imgTropfen2: HTMLImageElement = document.getElementById("regentropfen-").getElementsByTagName("img")[0];*/
@@ -88,7 +107,7 @@ var UXDesign;
             s.display = "inline";
             s.width = "670";
             s.height = "470";
-
+      
             let t: CSSStyleDeclaration = imgTropfen.style;
             t.display = "inline";
             t.width = "670";
@@ -105,7 +124,7 @@ var UXDesign;
         }
     }
     function doubleKeyUpRB(_event) {
-        let regenbogen = document.getElementById("regenbogen");
+        var regenbogen = document.getElementById("regenbogen");
         //let imgSonne: HTMLImageElement = document.getElementById("sonne").getElementsByTagName("img")[0];
         //let imgTropfen: HTMLImageElement = document.getElementById("regentropfen").getElementsByTagName("img")[0];
         if (regenbogen.classList.contains("visible")) {
@@ -116,7 +135,7 @@ var UXDesign;
             s.display = "block";
             s.width = "1000";
             s.height = "700";
-            
+      
             let t: CSSStyleDeclaration = imgTropfen.style;
             t.display = "block";
             t.width = "1000";
@@ -125,9 +144,9 @@ var UXDesign;
         }
     }
     function doubleKeyPressGewitter(_event) {
-        let tropfenPositiv = document.getElementById("regentropfen+");
-        let tropfenNegativ = document.getElementById("regentropfen-");
-        let gewitter = document.getElementById("gewitter");
+        var tropfenPositiv = document.getElementById("regentropfen+");
+        var tropfenNegativ = document.getElementById("regentropfen-");
+        var gewitter = document.getElementById("gewitter");
         if (tropfenPositiv.classList.contains("visible") && tropfenNegativ.classList.contains("visible")) {
             console.log("Gewitter wurde gedr�ckt");
             window.removeEventListener("keypress", handleKeyPress);
@@ -140,7 +159,7 @@ var UXDesign;
         }
     }
     function doubleKeyUpGewitter(_event) {
-        let gewitter = document.getElementById("gewitter");
+        var gewitter = document.getElementById("gewitter");
         if (gewitter.classList.contains("visible")) {
             console.log("gewitter wurde gedr�ckt");
             gewitter.classList.remove("visible");
@@ -149,9 +168,9 @@ var UXDesign;
         }
     }
     function doubleKeyPressSonnenwind(_event) {
-        let wind = document.getElementById("wind");
-        let sonne = document.getElementById("sonne");
-        let sonnenwind = document.getElementById("sonnenwind");
+        var wind = document.getElementById("wind");
+        var sonne = document.getElementById("sonne");
+        var sonnenwind = document.getElementById("sonnenwind");
         /*let imgSonne: HTMLImageElement = document.getElementById("sonne").getElementsByTagName("img")[0];
         let imgTropfen: HTMLImageElement = document.getElementById("regentropfen+").getElementsByTagName("img")[0];
         let imgTropfen2: HTMLImageElement = document.getElementById("regentropfen-").getElementsByTagName("img")[0];*/
@@ -167,7 +186,7 @@ var UXDesign;
         }
     }
     function doubleKeyUpSonnenwind(_event) {
-        let sonnenwind = document.getElementById("sonnenwind");
+        var sonnenwind = document.getElementById("sonnenwind");
         if (sonnenwind.classList.contains("visible")) {
             console.log("gewitter wurde gedr�ckt");
             sonnenwind.classList.remove("visible");
@@ -175,24 +194,4 @@ var UXDesign;
             window.addEventListener("keypress", handleKeyPress);
         }
     }
-    // Web Audio API
-    function audio() {
-        let audioctx = new AudioContext;
-        let gainNode = audioctx.createGain();
-        let source = audioctx.createMediaElementSource(document.getElementsByTagName("audio")[0]);
-        let mute = document.querySelector(".mute");
-        source.connect(gainNode);
-        gainNode.connect(audioctx.destination);
-        if (mute.id == "regen") {
-            gainNode.gain.setValueAtTime(1, audioctx.currentTime);
-            mute.id = "activated";
-            mute.innerHTML = "Unmute";
-        }
-        else {
-            gainNode.gain.setValueAtTime(0, audioctx.currentTime);
-            mute.id = "";
-            mute.innerHTML = "Mute";
-        }
-    }
 })(UXDesign || (UXDesign = {}));
-//# sourceMappingURL=UXDesign.js.map
