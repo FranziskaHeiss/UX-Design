@@ -41,10 +41,12 @@ function draw() {
   } else if (keyIsDown(a) && keyIsDown(d)) {
     // Gewitter
     img = 5;
+    sound = 1;
 
   } else if (keyIsDown(w)) {
     // Wind
     img = 3;
+    sound = 2;
 
   } else if (keyIsDown(a)) {
     // Regen +
@@ -54,6 +56,7 @@ function draw() {
   } else if (keyIsDown(s)) {
     // Sonne
     img = 2;
+    
 
   } else if (keyIsDown(d)) {
     // Regen -
